@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LIMPIEZA DE PUEBLOS</title>
+    <style>
+        body { background-color: #000; color: #00ff41; font-family: sans-serif; margin: 0; padding: 15px; text-align: center; }
+        h1 { color: #00ff41; text-shadow: 0 0 10px #00ff41; font-size: 1.8rem; margin: 10px 0; }
+        
+        /* Caja de fecha con botón de emergencia si no carga */
+        #caja-fecha {
+            border: 2px solid #00ff41;
+            padding: 15px;
+            margin: 10px 0;
+            background: #0a0a0a;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        #fecha-texto { font-size: 1rem; font-weight: bold; color: #fff; }
+        
+        .mensaje-dia {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 15px 0;
+            padding: 20px;
+            border: 2px solid #00ff41;
+            background-color: rgba(0, 255, 65, 0.2);
+        }
+
+        .contenedor-botones { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+        .btn-pueblo {
+            background-color: #000; color: #00ff41; border: 2px solid #00ff41;
+            padding: 20px; font-size: 1.3rem; font-weight: bold;
+            text-decoration: none; display: block; border-radius: 12px;
+        }
+        
+        .scroll-tabla { width: 100%; overflow-x: auto; margin: 20px 0; }
+        table { border-collapse: collapse; min-width: 600px; width: 100%; background: #000; }
+        th, td { border: 1px solid #00ff41; padding: 10px; font-size: 0.8rem; }
+        th { background: #003b0f; }
+
+        .detalles { text-align: left; font-size: 0.9rem; line-height: 1.6; color: #00ff41; }
+        .footer { font-size: 0.8rem; margin: 40px 0; color: #008f11; }
+        
+        /* Botón de recarga manual si el automático falla en Android */
+        #btn-fuerza {
+            background: #00ff41; color: #000; border: none; padding: 5px 10px;
+            margin-top: 10px; font-weight: bold; border-radius: 5px; cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>LIMPIEZA DE PUEBLOS</h1>
+
+    <div id="caja-fecha">
+        <span id="fecha-texto">CARGANDO...</span>
+        <button id="btn-fuerza" onclick="actualizar();">PULSA AQUÍ SI NO CARGA</button>
+    </div>
+    
+    <div id="mensaje-dia">...</div>
+
+    <div class="contenedor-botones">
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.4068819178788%2C-4.779538736674144&z=17" target="_blank" class="btn-pueblo">PARRES</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.412989088836824%2C-4.763646857550712&z=18" target="_blank" class="btn-pueblo">PANCAR</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.441159313092456%2C-4.890301379847279&z=17" target="_blank" class="btn-pueblo">NAVES</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.4403413572513%2C-4.9046028463217946&z=17" target="_blank" class="btn-pueblo">VILLAHORMES</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.43545913638991%2C-4.835995209655765&z=17" target="_blank" class="btn-pueblo">NIEMBRO</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.43398099926452%2C-4.826956775978126&z=17" target="_blank" class="btn-pueblo">BARRO</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.41275075422945%2C-4.802131754516141&z=18" target="_blank" class="btn-pueblo">PORRUA</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.413717016226116%2C-4.734951983191935&z=17" target="_blank" class="btn-pueblo">CUE</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1qO67y83vlCC5km0csx5QiIcmUoIxook&ll=43.42403791355753%2C-4.782693013088328&z=18" target="_blank" class="btn-pueblo">POO</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1rs3uuYT4F8C-qpMEA851A21h0md_8s0&ll=43.39626260124439%2C-4.73483318656428&z=17" target="_blank" class="btn-pueblo">SAN ROQUE</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1rs3uuYT4F8C-qpMEA851A21h0md_8s0&ll=43.40727554595343%2C-4.717761388638304&z=18" target="_blank" class="btn-pueblo">ANDRIN</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1rs3uuYT4F8C-qpMEA851A21h0md_8s0&ll=43.44577887963547%2C-4.9153141092622255&z=17" target="_blank" class="btn-pueblo">HONTORIA</a>
+        <a href="https://www.google.com/maps/d/u/0/edit?mid=1rs3uuYT4F8C-qpMEA851A21h0md_8s0&ll=43.395926068560414%2C-4.6372861838482216&z=18" target="_blank" class="btn-pueblo">PENDUELES</a>
+    </div>
+
+    <div class="scroll-tabla">
+        <table>
+            <thead>
+                <tr><th>LUNES</th><th>MARTES</th><th>MIERCOLES</th><th>JUEVES</th><th>VIERNES</th><th>SÁBADO</th><th>DOMINGO</th></tr>
+            </thead>
+            <tbody>
+                <tr><td>PARRES</td><td>NAVES</td><td>NIEMBRO</td><td>PENDUELES*</td><td>CUE</td><td>SAN ROQUE</td><td>DESCANSO</td></tr>
+                <tr><td>PANCAR</td><td>VILLAHORMES</td><td>BARRO</td><td>PORRUA</td><td>POO</td><td>ANDRIN</td><td>DESCANSO</td></tr>
+                <tr><td>BALMORI</td><td>CUE</td><td>SAN ROQUE</td><td>PARRES</td><td>NAVES</td><td>NIEMBRO</td><td>DESCANSO</td></tr>
+                <tr><td>PORRUA</td><td>POO</td><td>ANDRIN</td><td>PANCAR</td><td>HONTORIA*</td><td>BARRO</td><td>DESCANSO</td></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="detalles">
+        <p><strong>INVIERNO:</strong> 2 PUEBLOS/DÍA | <strong>VERANO:</strong> 4 PUEBLOS/DÍA</p>
+        <p><strong>PARRES:</strong> Escuela, parque, boleras e iglesia.</p>
+        <p><strong>PANCAR:</strong> Boleras, parque e iglesia San Patricio.</p>
+        <p><strong>NAVES:</strong> Plaza centro, iglesia y parque infantil.</p>
+        <p><strong>VILLAHORMES:</strong> Vial principal, parque, casa concejo.</p>
+        <p><strong>NIEMBRO:</strong> Parque puerto e iglesia.</p>
+        <p><strong>BARRO:</strong> Parque, cancha, fuente, accesos playas.</p>
+        <p><strong>BALMORI:</strong> Vial principal.</p>
+        <p><strong>PORRUA:</strong> Bolera, plaza iglesia y zona Llacín.</p>
+        <p><strong>CUE:</strong> Canchas, iglesia y bolera.</p>
+        <p><strong>POO:</strong> Bolera, parque, vial centro artesanía.</p>
+        <p><strong>SAN ROQUE:</strong> Plaza, casa concejo, lavadero y parque.</p>
+        <p><strong>ANDRIN:</strong> Plaza iglesia y viales.</p>
+        <p><strong>HONTORIA:</strong> Iglesia y área recreativa.</p>
+        <p><strong>PENDUELES:</strong> Calle principal, iglesia, bolera y parque.</p>
+    </div>
+
+    <div id="cal-box"></div>
+
+    <div class="footer">web creada por Javier Tuero.</div>
+
+    <script>
+        function actualizar() {
+            var n = new Date();
+            var dS = ["DOMINGO", "LUNES", "MARTES", "MIERCOLES", "JUEVES", "VIERNES", "SÁBADO"];
+            var mS = ["ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+            
+            var res = dS[n.getDay()] + ", " + n.getDate() + " DE " + mS[n.getMonth()] + " DE " + n.getFullYear();
+            var hora = n.getHours() + ":" + (n.getMinutes()<10?'0':'') + n.getMinutes();
+            
+            document.getElementById('fecha-texto').innerHTML = res + " <br> HORA: " + hora;
+
+            var r = [
+                "HOY ES LA JORNADA DE DESCANSO J",
+                "HOY TOCA LOS PUEBLOS DE POO, PORRUA, PARRES Y PANCAR",
+                "HOY TOCA LOS PUEBLOS DE NAVES, VILLAHORMES, CUE Y SAN ROQUE",
+                "HOY TOCA LOS PUEBLOS DE NIEMBRO, BARRO, ANDRIN Y PANCAR",
+                "HOY TOCA LOS PUEBLOS DE PENDUELES, PORRUA, PARRES Y HONTORIA",
+                "HOY TOCA LOS PUEBLOS DE CUE, POO, NAVES Y ANDRIN",
+                "HOY TOCA LOS PUEBLOS DE SAN ROQUE, NIEMBRO Y BARRO"
+            ];
+            document.getElementById('mensaje-dia').innerHTML = r[n.getDay()];
+            // Ocultar botón si ya cargó
+            document.getElementById('btn-fuerza').style.display = 'none';
+        }
+
+        function cal() {
+            var f = new Date();
+            var m = f.getMonth(), a = f.getFullYear();
+            var t = "<table><tr><th>L</th><th>M</th><th>X</th><th>J</th><th>V</th><th>S</th><th>D</th></tr><tr>";
+            var p = new Date(a, m, 1).getDay();
+            p = (p===0)?6:p-1;
+            for(var i=0; i<p; i++) t+="<td></td>";
+            var total = new Date(a, m+1, 0).getDate();
+            for(var d=1; d<=total; d++) {
+                if((d+p-1)%7===0 && d!==1) t+="</tr><tr>";
+                var s = (d===f.getDate()) ? 'background:#00ff41;color:#000' : '';
+                t+="<td style='"+s+"'>"+d+"</td>";
+            }
+            document.getElementById('cal-box').innerHTML = t+"</tr></table>";
+        }
+
+        window.onload = function() { actualizar(); cal(); setInterval(actualizar, 30000); };
+    </script>
+</body>
+</html>
